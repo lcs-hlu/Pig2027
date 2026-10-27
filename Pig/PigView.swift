@@ -18,8 +18,8 @@ import SwiftUI
 
 // Each player has their own colour.
 // TRY: Change these two colours. Try Color.purple, Color.green or Color.pink.
-let playerOneColor: Color = Color.blue
-let playerTwoColor: Color = Color.orange
+let playerOneColor: Color = Color.red
+let playerTwoColor: Color = Color.indigo
 
 // The game itself: what it remembers, what it shows on the screen,
 // and what it does when you click a button.
@@ -46,7 +46,7 @@ struct PigView: View {
 
     // The name of the SF Symbol that shows the die.
     @State var dieSymbol: String = "questionmark.square.fill"
-
+    @State var dieSymbolTwo: String = "questionmark.square.fill"
     // A message that tells the players what just happened.
     @State var message: String = "Player 1 goes first. Click Roll to start."
 
@@ -103,7 +103,9 @@ struct PigView: View {
             Image(systemName: dieSymbol)
                 .font(.system(size: 120))
                 .foregroundStyle(turnColor)
-
+            Image(systemName: dieSymbolTwo)
+                .font(.system(size: 120))
+                .foregroundStyle(turnColor)
             Text("Turn total: \(turnTotal)")
                 .font(.title2)
                 .bold()
@@ -149,26 +151,22 @@ struct PigView: View {
 
     // Rolls the die once for the current player.
     func rollDie() {
+        let rollOne: Int = Int.random(in: 1...6)
+        let rollTwo: Int = Int.random(in: 1...6)
 
-        // Pick a random whole number from 1 to 6, just like a real die.
-        let roll: Int = Int.random(in: 1...6)
+        dieSymbol = "die.face.\(rollOne).fill"
+        dieSymbolTwo = "die.face.\(rollTwo).fill"
 
-        // Show the matching die face. For a roll of 4, the symbol is "die.face.4.fill".
-        dieSymbol = "die.face.\(roll).fill"
-
-        if roll == 1 {
-            // A 1 wipes out the turn total and ends the turn.
+        if rollOne == 1 || rollTwo == 1 {
             message = "Oh no, a 1! Player \(currentPlayer) loses \(turnTotal) points."
             turnTotal = 0
             switchPlayer()
         } else {
-            // Any other roll is added to the turn total.
-            turnTotal += roll
-            // TRY: Change this message.
-            message = "You rolled a \(roll). Roll again, or hold?"
+            let diceTotal: Int = rollOne + rollTwo
+            turnTotal += diceTotal
+            message = "You rolled a \(rollOne) and a \(rollTwo) (\(diceTotal) points). Roll again, or hold?"
         }
     }
-
     // Banks the turn total into the current player's score, then ends the turn.
     func hold() {
         if currentPlayer == 1 {
@@ -176,9 +174,14 @@ struct PigView: View {
         } else {
             playerTwoScore += turnTotal
         }
-        message = "Player \(currentPlayer) banked \(turnTotal) points."
-        turnTotal = 0
-        switchPlayer()
+
+        if playerOneScore >= 100 || playerTwoScore >= 100 {
+            message = "Player \(currentPlayer) wins!"
+        } else {
+            message = "Player \(currentPlayer) banked \(turnTotal) points."
+            turnTotal = 0
+            switchPlayer()
+        }
     }
 
     // Passes the turn to the other player.
