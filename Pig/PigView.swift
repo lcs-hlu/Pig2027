@@ -21,7 +21,7 @@ import SwiftUI
 // TRY: Change these two colours. Try Color.purple, Color.green or Color.pink.
 let playerOneColor: Color = Color.red
 let playerTwoColor: Color = Color.indigo
-
+let playerThreeColor: Color = Color.green
 // The game itself: what it remembers, what it shows on the screen,
 // and what it does when you click a button.
 struct PigView: View {
@@ -34,8 +34,7 @@ struct PigView: View {
     // The points each player has banked. Banked points are safe.
     @State var playerOneScore: Int = 0
     @State var playerTwoScore: Int = 0
-
-    // The points collected so far on this turn.
+    @State var playerThreeScore: Int = 0    // The points collected so far on this turn.
     // They are not safe until the player clicks Hold.
     @State var turnTotal: Int = 0
 
@@ -55,7 +54,7 @@ struct PigView: View {
 
     var body: some View {
         VStack(spacing: 12) {
-
+            
             // The title at the top of the screen.
             HStack {
                 Image(systemName: "dice.fill")
@@ -63,7 +62,7 @@ struct PigView: View {
             }
             .font(.largeTitle)
             .bold()
-
+            
             // The scoreboard: one card for each player.
             HStack(spacing: 16) {
                 VStack {
@@ -77,77 +76,91 @@ struct PigView: View {
                 .padding()
                 .background(playerOneColor.opacity(0.2))
                 .clipShape(RoundedRectangle(cornerRadius: 20))
-
+                
                 VStack {
                     Text("Player 2")
                         .font(.headline)
                     Text("\(playerTwoScore)")
                         .font(.system(size: 48, weight: .bold))
                         .monospacedDigit()
+                    
                 }
                 .frame(maxWidth: .infinity)
                 .padding()
                 .background(playerTwoColor.opacity(0.2))
                 .clipShape(RoundedRectangle(cornerRadius: 20))
+                
+                
+                VStack {
+                    Text("Player 3")
+                        .font(.headline)
+                    Text("\(playerThreeScore)")
+                        .font(.system(size: 48, weight: .bold))
+                        .monospacedDigit()
+                }
+                .frame(maxWidth: .infinity)
+                .padding()
+                .background(playerThreeColor.opacity(0.2))
+                .clipShape(RoundedRectangle(cornerRadius: 20))
             }
-
-            Spacer()
-
-            // Whose turn is it?
-            Text("Player \(currentPlayer), your turn")
-                .font(.title)
-                .bold()
-                .foregroundStyle(turnColor)
-
-            // The die.
-            // TRY: Change the size of the die from 120 to something bigger or smaller.
-            Image(systemName: dieSymbol)
-                .font(.system(size: 120))
-                .foregroundStyle(turnColor)
-            Image(systemName: dieSymbolTwo)
-                .font(.system(size: 120))
-                .foregroundStyle(turnColor)
-            Text("Turn total: \(turnTotal)")
+                
+                // Whose turn is it?
+                Text("Player \(currentPlayer), your turn")
+                    .font(.title)
+                    .bold()
+                    .foregroundStyle(turnColor)
+                
+                // The die.
+                // TRY: Change the size of the die from 120 to something bigger or smaller.
+                Image(systemName: dieSymbol)
+                    .font(.system(size: 120))
+                    .foregroundStyle(turnColor)
+                Image(systemName: dieSymbolTwo)
+                    .font(.system(size: 120))
+                    .foregroundStyle(turnColor)
+                Text("Turn total: \(turnTotal)")
+                    .font(.title2)
+                    .bold()
+                    .monospacedDigit()
+                
+                Text(message)
+                    .font(.headline)
+                    .foregroundStyle(Color.secondary)
+                    .multilineTextAlignment(.center)
+                    .frame(minHeight: 44)
+                
+                Spacer()
+                
+                // The two buttons a player uses on their turn.
+                // The code inside the braces runs when that button is clicked.
+                HStack(spacing: 16) {
+                    Button("Roll", systemImage: "dice") {
+                        rollDie()
+                    }
+                    .buttonStyle(.borderedProminent)
+                    
+                    Button("Hold", systemImage: "hand.raised.fill") {
+                        hold()
+                    }
+                    .buttonStyle(.bordered)
+                }
                 .font(.title2)
                 .bold()
-                .monospacedDigit()
-
-            Text(message)
-                .font(.headline)
-                .foregroundStyle(Color.secondary)
-                .multilineTextAlignment(.center)
-                .frame(minHeight: 44)
-
-            Spacer()
-
-            // The two buttons a player uses on their turn.
-            // The code inside the braces runs when that button is clicked.
-            HStack(spacing: 16) {
-                Button("Roll", systemImage: "dice") {
-                    rollDie()
+                .controlSize(.large)
+                .tint(turnColor)
+                
+                Button("New Game") {
+                    startNewGame()
                 }
-                .buttonStyle(.borderedProminent)
-
-                Button("Hold", systemImage: "hand.raised.fill") {
-                    hold()
-                }
-                .buttonStyle(.bordered)
-            }
-            .font(.title2)
-            .bold()
-            .controlSize(.large)
-            .tint(turnColor)
-
-            Button("New Game") {
-                startNewGame()
-            }
+            
         }
         .padding(32)
         .fontDesign(.rounded)
         // How big the game's window is on the Mac. It can be made taller or wider.
         .frame(minWidth: 480, minHeight: 680)
     }
-
+    
+    
     // MARK: - Functions
 
     // Rolls the die once for the current player.
@@ -172,11 +185,13 @@ struct PigView: View {
     func hold() {
         if currentPlayer == 1 {
             playerOneScore += turnTotal
-        } else {
+        } else if currentPlayer == 2 {
             playerTwoScore += turnTotal
+        } else {
+            playerThreeScore += turnTotal
         }
 
-        if playerOneScore >= 100 || playerTwoScore >= 100 {
+        if playerOneScore >= 100 || playerTwoScore >= 100 || playerThreeScore >= 100 {
             message = "Player \(currentPlayer) wins!"
         } else {
             message = "Player \(currentPlayer) banked \(turnTotal) points."
@@ -190,16 +205,19 @@ struct PigView: View {
         if currentPlayer == 1 {
             currentPlayer = 2
             turnColor = playerTwoColor
+        } else if currentPlayer == 2 {
+            currentPlayer = 3
+            turnColor = playerThreeColor
         } else {
             currentPlayer = 1
             turnColor = playerOneColor
         }
     }
-
     // Sets everything back to the way it was at the start.
     func startNewGame() {
         playerOneScore = 0
         playerTwoScore = 0
+        playerThreeScore = 0
         turnTotal = 0
         currentPlayer = 1
         turnColor = playerOneColor

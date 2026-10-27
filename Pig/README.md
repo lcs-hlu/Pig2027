@@ -1,6 +1,6 @@
-# Rock Paper Scissors
+# Pig
  
-You against the computer. Click a move, and the computer picks one at random.
+You can against to another player 
  
 ## How to play
  
