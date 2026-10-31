@@ -3,15 +3,15 @@
 //  Pig
 //
 //  WHAT THIS GAME DOES NOW
-//  Pig is a dice game for two players who share one laptop.
-//  On your turn, roll the die as many times as you like.
+//  Pig is a dice game for three players who share one laptop.
+//  On your turn, roll two dices as many times as you like.
 //  Each roll adds to your turn total.
 //  Roll a 1 and you lose your turn total, and your turn is over.
 //  Click Hold to bank your turn total into your score and end your turn.
 //
-//  WHAT IT DOES NOT DO YET
-//  Nobody can win! The scores just keep going up.
-//  In the real game, the first player to reach 100 points wins.
+//
+//
+//
 //
 
 
@@ -38,7 +38,7 @@ struct PigView: View {
     // They are not safe until the player clicks Hold.
     @State var turnTotal: Int = 0
 
-    // Whose turn it is: 1 or 2.
+    // Whose turn it is: 1 or 2 or 3.
     @State var currentPlayer: Int = 1
 
     // The colour of whoever's turn it is.
@@ -105,6 +105,7 @@ struct PigView: View {
             }
                 
                 // Whose turn is it?
+            
                 Text("Player \(currentPlayer), your turn")
                     .font(.title)
                     .bold()

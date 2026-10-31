@@ -1,9 +1,8 @@
-# Pig
- 
-You can against to another player， and add up the number you roll. The number that you try to achieve is a hundred.
+## Pig
+This is Pig dice game where three players compete to reach 100 points. Player roll two dice at the same time, and the sum of two dice is added to their score. Players can choose to roll again or holds their points.
  
 ## How to play
-1. Firstly, you need to click the roll button, and the dice will decide how much number you will get
+1. Firstly, you need to click the roll button, and the dice will decide how much number you will get.
 2. In addition, if you roll out a number one, you will lose the number that you roll, and the second player will get the chance to roll the dice
 3. Furthermore, when you get a number, you can try to hold or you can try to get a larger number.
 4. Lastly, if you achieve to a certain number like a 50 or a hundred, you will win the game.
@@ -43,10 +42,6 @@ The idea uses a @State var, an if else statement, Int, and turnTotal,message tha
     This functions is just tell how the two dice system work, for example, it's says let diceTotal: Int = rollOne + rollTwo, and it's shows the player will get the number by add the two dice's value, and the symbol is +=.
     ```       
        
-       
-## Credits
- 
-- The starting game was written by Mr. Gordon.
 
 ## Testing 
 Test 1 : 
@@ -101,3 +96,6 @@ Should happen:
 There should be a player 3 on the game's page'
 Did happen:
 Yes
+## Credits
+ 
+- The starting game was written by Mr. Gordon.
