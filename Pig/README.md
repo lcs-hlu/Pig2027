@@ -48,33 +48,56 @@ The idea uses a @State var, an if else statement, Int, and turnTotal,message tha
  
 - The starting game was written by Mr. Gordon.
 
-Test
+## Testing 
+Test 1 : 
 if the player 1 roll the number 1, player 2 can start to roll the dice
-Input
-player 1 roll 1 
-Should happen
-player 2 could start roll the dice'
-Did happen
+Input:
+let roll One: Int=1
+Should happen:
+player 2 could start roll the dice, and try to roll or holds 
+Did happen:
 yes
 
 
-Test
-if player 1 roll to 94, and holds
-Input
-player 1 roll to 94
-Should happen
-The game will continune
-Did happen
+Test 2 :
+If player roll to 94, the game will continune
+Input:
+    @State var playerOneScore: Int = 94
+    Should happen:
+The game will continune, and playerOne could still roll and hold
+Did happen:
 Yes
 
 
-Test
-If player 1 roll to 100, and holds
-Input
-player1 roll to 100
-Should happen
-player 1 should win the game 
-Did happen
+Test 3 :
+If player 1 roll to 100, and holds, and there should be a sentence that says player 1 win the game 
+Input:
+    @State var playerOneScore: Int = 100
+    Should happen:
+player 1 should win the game, and there's will be a word that says player 1 wins the game
+Did happen:
 yes
 
-
+Test 4:
+When the player roll two dice together, the number will add up, and the player could choose to hold the number that add up or not
+Input:
+        let rollOne: Int = 3
+        let rollTwo: Int = 4
+                    let diceTotal: Int = rollOne + rollTwo
+Should happen:
+the player should get the number that add up by two dice, and they should have the choice to roll and hold
+Did happen:
+Yes
+Test 5:
+There's should be a player3 on the pig games page
+Input:
+                VStack {
+                    Text("Player 3")
+                        .font(.headline)
+                    Text("\(playerThreeScore)")
+                        .font(.system(size: 48, weight: .bold))
+                        .monospacedDigit()
+Should happen:
+There should be a player 3 on the game's page'
+Did happen:
+Yes
